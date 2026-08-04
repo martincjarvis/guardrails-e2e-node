@@ -1,0 +1,40 @@
+# Guardrails CI — runs the repository's own verify command on every PR.
+# Same command a developer runs locally; this catches what --no-verify skipped.
+name: guardrails
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: guardrails-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # commitlint and diff-based checks need history
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: npm
+      - run: npm ci
+      - run: npm run verify
+      - name: Coverage on the PR
+        # Platform-native visibility: the run's summary page.
+        if: always()
+        run: |
+          {
+            echo "## Coverage"
+            echo '```'
+            cat coverage/coverage-summary.txt 2>/dev/null || npx --no-install c8 report --reporter=text-summary 2>/dev/null || echo "no coverage output found"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Lint commit messages on the PR range
+        run: npx --no-install commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }}
