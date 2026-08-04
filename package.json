@@ -3,7 +3,38 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=24.0.0",
+    "npm": ">=11.6.0"
+  },
   "scripts": {
-    "test": "node --test \"test/*.test.mjs\""
-  }
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --max-warnings 0",
+    "lint:md": "markdownlint-cli2 \"**/*.md\"",
+    "spell": "cspell lint --no-progress --gitignore .",
+    "secrets": "secretlint \"**/*\"",
+    "typecheck": "echo \"no type system (plain ESM JS); typecheck off\" && exit 0",
+    "test": "c8 --check-coverage --lines 80 node --test \"test/*.test.mjs\"",
+    "verify": "npm run format:check && npm run lint && npm run lint:md && npm run spell && npm run secrets && npm run typecheck && npm test",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.1",
+    "@commitlint/config-conventional": "^21.2.0",
+    "@eslint/js": "^10.0.1",
+    "@secretlint/secretlint-rule-pattern": "^13.0.4",
+    "@secretlint/secretlint-rule-preset-recommend": "^13.0.4",
+    "c8": "^12.0.0",
+    "cspell": "^10.0.1",
+    "eslint": "^10.8.0",
+    "globals": "^17.9.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.3.0",
+    "markdownlint-cli2": "^0.23.2",
+    "markdownlint-rule-relative-links": "^5.1.2",
+    "prettier": "^3.9.6",
+    "secretlint": "^13.0.4"
+  },
+  "exports": "./src/slugify.mjs"
 }

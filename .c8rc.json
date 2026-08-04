@@ -1,0 +1,7 @@
+{
+  "all": true,
+  "src": ["src"],
+  "check-coverage": true,
+  "lines": 80,
+  "reporter": ["text", "text-summary", "lcov"]
+}

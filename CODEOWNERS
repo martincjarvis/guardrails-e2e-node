@@ -1,0 +1,14 @@
+# CODEOWNERS — every guardrail change and opt-out gets a human review.
+# This is the whole approval system for .guardrails.json exceptions.
+
+# The guardrails record itself, and the standards page that defines it.
+.guardrails.json      @martincjarvis
+docs/guardrails.md    @martincjarvis
+
+# Hook managers and CI that enforce the gates.
+.husky/               @martincjarvis
+.github/              @martincjarvis
+.lintstagedrc.json    @martincjarvis
+
+# Default: everything else in the repository.
+*                     @martincjarvis

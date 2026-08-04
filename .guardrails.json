@@ -1,0 +1,38 @@
+{
+  "//": "Guardrails record — docs/guardrails.md says what each capability means here. Every capability appears once: either the tool implementing it, or off with why and who. Changes require human review via CODEOWNERS.",
+  "format": {
+    "tool": "prettier"
+  },
+  "lint": {
+    "tool": "eslint (@eslint/js recommended, --max-warnings 0) + markdownlint-cli2 (relative-links rule)"
+  },
+  "typecheck": {
+    "off": true,
+    "why": "plain ESM JavaScript — no TypeScript or jsconfig checkJs in use, so there is no type system to check",
+    "who": "@martincjarvis"
+  },
+  "tests": {
+    "tool": "node --test (node:test); E2E journey via the public exports entry (test/journey.test.mjs)"
+  },
+  "coverage": {
+    "tool": "c8 (--check-coverage --lines 80, --all over src/)"
+  },
+  "commit-messages": {
+    "tool": "commitlint + @commitlint/config-conventional"
+  },
+  "secrets": {
+    "tool": "secretlint (preset-recommend + pattern rule) at commit; GitHub secret scanning + push protection (see BOOTSTRAP-REPORT.md)"
+  },
+  "spelling": {
+    "tool": "cspell (project dictionary in cspell.json)"
+  },
+  "ci-verify": {
+    "tool": "GitHub Actions: .github/workflows/guardrails.yml runs npm run verify on every PR"
+  },
+  "branch-review": {
+    "tool": "GitHub branch protection — PR-only, required verify check, enforce_admins (exact commands in BOOTSTRAP-REPORT.md)"
+  },
+  "supply-chain": {
+    "tool": "npm min-release-age=7 + audit-level=high (.npmrc); Dependabot alerts+updates and CodeQL via GitHub (exact commands in BOOTSTRAP-REPORT.md)"
+  }
+}
