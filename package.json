@@ -35,5 +35,6 @@
     "markdownlint-rule-relative-links": "^5.1.2",
     "prettier": "^3.9.6",
     "secretlint": "^13.0.4"
-  }
+  },
+  "exports": "./src/slugify.mjs"
 }
